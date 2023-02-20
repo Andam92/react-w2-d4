@@ -1,33 +1,27 @@
 // STATO
 
+import { ADD_TO_FAVOURITES, REMOVE_FAVOURITES } from "../actions";
+
 const initialState = {
-  favourites: {
-    content: [],
-  },
+  content: [],
 };
 
 // REDUCER
 
-const mainReducer = (state = initialState, action) => {
+const favouritesReducer = (state = initialState, action) => {
   switch (action.type) {
     // aggiunge un'azienda
-    case "ADD_TO FAVOURITES":
+    case ADD_TO_FAVOURITES:
       return {
-        favourites: {
-          ...state.favourites,
-          content: [...state.favourites.content, action.payload],
-        },
+        ...state,
+        content: [...state.content, action.payload],
       };
 
     // rimuove un'azienda
-    case "REMOVE_FAV":
+    case REMOVE_FAVOURITES:
       return {
-        favourites: {
-          ...state.favourites,
-          content: state.favourites.content.filter(
-            (e, index) => e !== action.payload
-          ),
-        },
+        ...state,
+        content: state.content.filter((e, index) => e !== action.payload),
       };
 
     default:
@@ -35,4 +29,4 @@ const mainReducer = (state = initialState, action) => {
   }
 };
 
-export default mainReducer;
+export default favouritesReducer;

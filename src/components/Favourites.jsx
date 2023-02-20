@@ -1,9 +1,10 @@
 import { Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { removeFromFavouritesAction } from "../redux/actions";
 
 const Favourites = () => {
-  const removeFavourites = useDispatch();
+  const dispatch = useDispatch();
 
   const favouriteList = useSelector((state) => state.favourites.content);
   console.log(favouriteList);
@@ -15,11 +16,11 @@ const Favourites = () => {
           <ListGroup>
             <ListGroup.Item>
               <Row className="justify-content-between">
-                <Col xs={6}>
+                <Col xs={4}>
                   <h1>YourFavourites</h1>
                 </Col>
                 <Link to={"/"}>
-                  <Col xs={6}>
+                  <Col xs={12}>
                     <p>Back to Home</p>
                   </Col>
                 </Link>
@@ -28,17 +29,14 @@ const Favourites = () => {
             {favouriteList.map((companyName) => {
               return (
                 <ListGroup.Item>
-                  {companyName}{" "}
+                  {companyName}
                   <button
                     onClick={() =>
-                      removeFavourites({
-                        type: "REMOVE_FAV",
-                        payload: companyName,
-                      })
+                      dispatch(removeFromFavouritesAction(companyName))
                     }
                   >
                     ❌
-                  </button>
+                  </button>{" "}
                 </ListGroup.Item>
               );
             })}

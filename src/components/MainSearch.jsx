@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { fetchJobsAction } from "../redux/actions";
 import Job from "./Job";
+import { useDispatch, useSelector } from "react-redux";
 
 const MainSearch = () => {
+  const dispatch = useDispatch(); // --> metodo di redux per usare il dispatch
   const [query, setQuery] = useState("");
-  const [jobs, setJobs] = useState([]);
+  const jobsArray = useSelector((state) => state.jobs.jobList.data); // --> accedo allo store generale con l'hook useSelector. Questo hook accetta come parametro lo state e ritorna le proprietà della porzione di stato che ci interessano
+  /*  const [jobs, setJobs] = useState([]); */
 
   const baseEndpoint =
     "https://strive-benchmark.herokuapp.com/api/jobs?search=";
@@ -17,7 +21,7 @@ const MainSearch = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
+    /*     try {
       const response = await fetch(baseEndpoint + query + "&limit=20");
       if (response.ok) {
         const { data } = await response.json();
@@ -27,9 +31,11 @@ const MainSearch = () => {
       }
     } catch (error) {
       console.log(error);
-    }
+    } */
+    dispatch(fetchJobsAction(baseEndpoint, query + "&limit=20"));
   };
 
+  console.log(jobsArray);
   return (
     <Container>
       <Row>
@@ -50,7 +56,7 @@ const MainSearch = () => {
           </Form>
         </Col>
         <Col xs={10} className="mx-auto mb-5">
-          {jobs.map((jobData) => (
+          {jobsArray.map((jobData) => (
             <Job key={jobData._id} data={jobData} />
           ))}
         </Col>
