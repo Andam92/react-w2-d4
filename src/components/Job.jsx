@@ -1,9 +1,14 @@
 import { Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addToFavouritesAction } from "../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToFavouritesAction,
+  removeFromFavouritesAction,
+} from "../redux/actions";
 
 const Job = ({ data }) => {
+  const favouriteJobs = useSelector((state) => state.favourites.content);
+  console.log("OGGI STEFANO HA SBAGLIATO", favouriteJobs);
   const dispatch = useDispatch();
   return (
     <Row
@@ -19,11 +24,21 @@ const Job = ({ data }) => {
         </a>
       </Col>
       <Col xs={2}>
-        <Button
-          onClick={() => dispatch(addToFavouritesAction(data.company_name))}
-        >
-          ❤️
-        </Button>
+        {favouriteJobs.includes(data.company_name) ? (
+          <Button
+            onClick={() =>
+              dispatch(removeFromFavouritesAction(data.company_name))
+            }
+          >
+            ❌
+          </Button>
+        ) : (
+          <Button
+            onClick={() => dispatch(addToFavouritesAction(data.company_name))}
+          >
+            ❤️
+          </Button>
+        )}
       </Col>
     </Row>
   );

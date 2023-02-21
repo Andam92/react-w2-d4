@@ -29,14 +29,16 @@ const Favourites = () => {
             {favouriteList.map((companyName) => {
               return (
                 <ListGroup.Item>
-                  {companyName}
-                  <button
-                    onClick={() =>
-                      dispatch(removeFromFavouritesAction(companyName))
-                    }
-                  >
-                    ❌
-                  </button>{" "}
+                  <div className="d-flex justify-content-between">
+                    {companyName}
+                    <button
+                      onClick={() =>
+                        dispatch(removeFromFavouritesAction(companyName))
+                      }
+                    >
+                      ❌
+                    </button>
+                  </div>{" "}
                 </ListGroup.Item>
               );
             })}
