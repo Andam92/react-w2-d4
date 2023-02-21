@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { fetchJobsAction } from "../redux/actions";
 import Job from "./Job";
@@ -10,6 +10,8 @@ const MainSearch = () => {
   const [query, setQuery] = useState("");
   const jobsArray = useSelector((state) => state.jobs.jobList.data); // --> accedo allo store generale con l'hook useSelector. Questo hook accetta come parametro lo state e ritorna le proprietà della porzione di stato che ci interessano
   /*  const [jobs, setJobs] = useState([]); */
+  const isLoading = useSelector((state) => state.jobs.isLoading);
+  const hasError = useSelector((state) => state.jobs.hasError);
 
   const baseEndpoint =
     "https://strive-benchmark.herokuapp.com/api/jobs?search=";
@@ -55,11 +57,17 @@ const MainSearch = () => {
             />
           </Form>
         </Col>
-        <Col xs={10} className="mx-auto mb-5">
-          {jobsArray.map((jobData) => (
-            <Job key={jobData._id} data={jobData} />
-          ))}
-        </Col>
+        {hasError ? (
+          <Alert variant="warning">ALERT</Alert>
+        ) : isLoading ? (
+          <Spinner animation="border" role="status"></Spinner>
+        ) : (
+          <Col xs={10} className="mx-auto mb-5">
+            {jobsArray?.map((jobData) => (
+              <Job key={jobData._id} data={jobData} />
+            ))}
+          </Col>
+        )}
       </Row>
     </Container>
   );
